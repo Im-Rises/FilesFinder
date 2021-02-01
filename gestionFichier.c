@@ -1,6 +1,7 @@
 #include "gestionFichier.h"
 
-//------------------------------------------------------FONCTION D'AFFICHAGE AIDE-----------------------------------------//
+
+/*------------------------------------------------------FONCTION D'AFFICHAGE AIDE-----------------------------------------*/
 
 void afficherCommandes(const char nomFichier[], const char version[])
 {
@@ -21,6 +22,74 @@ void afficherCommandes(const char nomFichier[], const char version[])
 		"-e \tExtract the data of the file.\n"
 		"\n", version, nomFichier);
 }
+
+
+
+
+/*-------------------------------------------------------FONCTION AFFICHAGE CODE FICHIER LU---------------------------------------------------------*/
+
+void affichageCodeHexaAvecInterface(const int* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu)
+{
+	/*
+	* Fonction qui affiche l'interface et le code hexadécimale du ficheir ouvert par l'appel de deux fonctions
+	*/
+
+	afficherInterfaceCodeHexa(nbOctetParLigne, adresseFichierLu);
+
+	afficherCodeHexa(fichierLu, nbOctetParLigne);
+}
+
+void afficherInterfaceCodeHexa(const int* nbOctetParLigne, const char adresseFichier[])
+{
+	/*
+	* Fontion qui affiche l'interface d'ecriture du début du code hexa
+	*/
+	printf("\nThe hexa code of the file %s is :\n\n", adresseFichier);
+	printf("Offset (h)\t");
+
+	for (int i = 0; i < *nbOctetParLigne; i++)//Ecrit le numéro de chaque colonne en fonction du nombre définie en paramètre
+	{
+		printf("%02X ", i);
+	}
+	printf("\n\n");
+}
+
+void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne)
+{
+	/*
+	* Fonction qui affiche le code hexdécimale avec le numéro de ligne du fichier lu envoué en paramètre de la fonction.
+	*/
+
+	long numeroLigne = 0;
+	unsigned char octetLu;
+	int nbOctetLigneEcrit = 0;
+
+	printf("%00000008X\t", numeroLigne);//Affichage première ligne
+
+	while (!feof(fichierLu)) // On continue tant qu'on ai pas à la fin du fichier
+	{
+		//On affiche avant de lire le premier caractère pour éviter d'écrire le caractère de fin de fichier en hexa "FF" et en texte "ÿ"
+		octetLu = fgetc(fichierLu); // On lit le caractère
+
+		if (!feof(fichierLu))//Evite d'afficher l'octet de fin de fichier
+		{
+			if (nbOctetLigneEcrit >= *nbOctetParLigne)//Si on a attteint le bout de la ligne (nbOctetParLigne) alors on passe à la ligne
+			{
+				nbOctetLigneEcrit = 0;
+				printf("\n");
+				numeroLigne += *nbOctetParLigne;//Incrémentation du numéro de ligne par rapport au nombre d'octet par ligne
+				printf("%00000008X\t", numeroLigne);
+			}
+			printf("%02X ", octetLu); // On l'affiche en hexadécimale avec deux caractères et en majuscule s'il y a des lettres
+		}
+
+		nbOctetLigneEcrit++;//Incrémentation du nombre d'octet écrit à la ligne actuelle
+
+	}
+	printf("\n\n");
+}
+
+
 
 
 /*------------------------------------------------------FONTIONS TEST BON FONCTIONNEMENT---------------------------------------*/
@@ -55,6 +124,7 @@ void allocationDynamiqueTest(char* tableau)
 		exit(5);
 	}
 }
+
 
 
 
@@ -162,71 +232,6 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 
 
 
-/*-------------------------------------------------------FONCTION AFFICHAGE CODE FICHIER LU---------------------------------------------------------*/
-
-void affichageCodeHexaAvecInterface(const int* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu)
-{
-	/*
-	* Fonction qui affiche l'interface et le code hexadécimale du ficheir ouvert par l'appel de deux fonctions
-	*/
-
-	afficherInterfaceCodeHexa(nbOctetParLigne, adresseFichierLu);
-
-	afficherCodeHexa(fichierLu, nbOctetParLigne);
-}
-
-void afficherInterfaceCodeHexa(const int* nbOctetParLigne, const char adresseFichier[])
-{
-	/*
-	* Fontion qui affiche l'interface d'ecriture du début du code hexa
-	*/
-	printf("\nThe hexa code of the file %s is :\n\n", adresseFichier);
-	printf("Offset (h)\t");
-
-	for (int i = 0; i < *nbOctetParLigne; i++)//Ecrit le numéro de chaque colonne en fonction du nombre définie en paramètre
-	{
-		printf("%02X ", i);
-	}
-	printf("\n\n");
-}
-
-void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne)
-{
-	/*
-	* Fonction qui affiche le code hexdécimale avec le numéro de ligne du fichier lu envoué en paramètre de la fonction.
-	*/
-
-	long numeroLigne = 0;
-	unsigned char octetLu;
-	int nbOctetLigneEcrit = 0;
-
-	printf("%00000008X\t", numeroLigne);//Affichage première ligne
-
-	while (!feof(fichierLu)) // On continue tant qu'on ai pas à la fin du fichier
-	{
-		//On affiche avant de lire le premier caractère pour éviter d'écrire le caractère de fin de fichier en hexa "FF" et en texte "ÿ"
-		octetLu = fgetc(fichierLu); // On lit le caractère
-
-		if (!feof(fichierLu))//Evite d'afficher l'octet de fin de fichier
-		{
-			if (nbOctetLigneEcrit >= *nbOctetParLigne)//Si on a attteint le bout de la ligne (nbOctetParLigne) alors on passe à la ligne
-			{
-				nbOctetLigneEcrit = 0;
-				printf("\n");
-				numeroLigne += *nbOctetParLigne;//Incrémentation du numéro de ligne par rapport au nombre d'octet par ligne
-				printf("%00000008X\t", numeroLigne);
-			}
-			printf("%02X ", octetLu); // On l'affiche en hexadécimale avec deux caractères et en majuscule s'il y a des lettres
-		}
-
-		nbOctetLigneEcrit++;//Incrémentation du nombre d'octet écrit à la ligne actuelle
-
-	}
-	printf("\n\n");
-}
-
-
-
 /*------------------------------------------------------------FONCTION DE RECHERCHE DE FICHIERS DANS UN FICHIER---------------------------------*/
 
 void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFichiers[], const unsigned char chaineEnTete[], const int tailleChaineEnTete, const unsigned char chaineEnFin[], const int tailleChaineEnFin, const char nomFichiers[], const char extension[])
@@ -299,6 +304,8 @@ void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFi
 
 	printf("Number of %s file extracted : %d\n", extension, numfichierPaterneTrouve);
 }
+
+
 
 
 /*------------------------------------------------------------FONCTION AUXILIAIRES------------------------------------------------------*/
