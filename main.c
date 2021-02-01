@@ -32,7 +32,7 @@ void ouvreFichierLectureEtTest(FILE** fichierLecture, const char adresseEntree[]
 void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcriture[], const char nomFichiers[], const int* numFichier, const char extension[]);
 
 void affichageCodeHexaAvecInterface(const int* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu);
-void afficherInterfaceCodeHexa(const long* nbOctetParLigne, const char adresseFichier[]);
+void afficherInterfaceCodeHexa(const int* nbOctetParLigne, const char adresseFichier[]);
 void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne);
 
 void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFichiers[], const unsigned char chaineEnTete[], const int tailleChaineEnTete, const unsigned char chaineEnFin[], const int tailleChaineEnFin, const char nomFichiers[], const char extension[]);
@@ -373,7 +373,7 @@ void affichageCodeHexaAvecInterface(const int *nbOctetParLigne,char adresseFichi
 	afficherCodeHexa(fichierLu, nbOctetParLigne);
 }
 
-void afficherInterfaceCodeHexa(const long *nbOctetParLigne, const char adresseFichier[])
+void afficherInterfaceCodeHexa(const int* nbOctetParLigne, const char adresseFichier[])
 {
 	/*
 	* Fontion qui affiche l'interface d'ecriture du début du code hexa
