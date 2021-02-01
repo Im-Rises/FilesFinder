@@ -2,27 +2,25 @@
 #include <stdlib.h>
 #include <string.h>
 
-// coucou je suis un commentaire 
-
 #define VER "1.0"
 
 /*-----------------------------------------------------NOTES-----------------------------------------------------------
-* 1 - Pour une raison inconnue il est impossible d'envoyer argv[0], argv[1], argv[2] etc... pour l'ouverture/l'ï¿½criture d'un fichier
-* alors j'ai fais des allocations dynamiques oï¿½ j'ai copier les argv dedans et ensuite envoyï¿½ ces tableaux allouï¿½s pour l'ouverture
+* 1 - Pour une raison inconnue il est impossible d'envoyer argv[0], argv[1], argv[2] etc... pour l'ouverture/l'écriture d'un fichier
+* alors j'ai fais des allocations dynamiques où j'ai copier les argv dedans et ensuite envoyé ces tableaux alloués pour l'ouverture
 * de fichiers.
-* 2 - Pour une raison inconnue quand un tableau est transfï¿½rï¿½ dans une fonction, on ne peut pas rï¿½cupï¿½rer sa taille correctement
-* sieof(tableau) n'affiche pas lï¿½ mï¿½me valeur dans une fonction et en dehors. Alors dans chaque fonction qui traite un tableau
+* 2 - Pour une raison inconnue quand un tableau est transféré dans une fonction, on ne peut pas récupérer sa taille correctement
+* sieof(tableau) n'affiche pas lâ même valeur dans une fonction et en dehors. Alors dans chaque fonction qui traite un tableau
 * j'envoie la taille du tableau afin de traiter manuellement chaque case.
 */
 
 /*--------------------------------------------LES TYPES D'ERREUR D'ARRET DU PROGRAMME------------------------------
-* Les diffï¿½rents types de code erreur :
+* Les différents types de code erreur :
 * 0 - Fonctionnement normal du programme.
-* 1 - Manque de paramï¿½tres en entrï¿½e du programme pour un fonctionnement minmimum (-h).
+* 1 - Manque de paramètres en entrée du programme pour un fonctionnement minmimum (-h).
 * 2 - Mode/option inconnue.
-* 3 - Fichier impossible ï¿½ lire ou impossible d'ï¿½crire les fichiers (pas de fichier ï¿½ lire ou de destination).
-* 4 - Fichier impossible ï¿½ crï¿½er et/ou ecrire dedans.
-* 5 - S'il y a un manque de mï¿½moire alors le programme s'arrï¿½te avec cette erreur (allocation dynamique).
+* 3 - Fichier impossible à lire ou impossible d'écrire les fichiers (pas de fichier à lire ou de destination).
+* 4 - Fichier impossible à créer et/ou ecrire dedans.
+* 5 - S'il y a un manque de mémoire alors le programme s'arrête avec cette erreur (allocation dynamique).
 */
 
 //-----------------------------------------PROTOTYPE DES FONCTIONS-------------------------------------------------//
@@ -33,7 +31,7 @@ void allocationDynamiqueTest(char* tableau);
 void ouvreFichierLectureEtTest(FILE** fichierLecture, const char adresseEntree[]);
 void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcriture[], const char nomFichiers[], const int* numFichier, const char extension[]);
 
-void affichageCodeHexaAvecInterface(const int* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu);
+void affichageCodeHexaAvecInterface(const long* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu);
 void afficherInterfaceCodeHexa(const long* nbOctetParLigne, const char adresseFichier[]);
 void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne);
 
@@ -48,21 +46,21 @@ int main(int argc, char* argv[])
 {
 	//----------------------------------------------Initalisation------------------------------------------//
 
-	//argc est le nombre de paramï¿½tre en entrï¿½e du programme
-	//argv est un tableau de char qui ï¿½ chaque case contient un des paramï¿½tres en entrï¿½e
+	//argc est le nombre de paramètre en entrée du programme
+	//argv est un tableau de char qui à chaque case contient un des paramètres en entrée
 
-	const int nbOctetParLigne = 16;	//Nombre d'octet affichï¿½ par ligne
-	FILE* fichierLu = NULL;			//Crï¿½ation d'un objet de typer ficher 
+	const int nbOctetParLigne = 16;	//Nombre d'octet affiché par ligne
+	FILE* fichierLu = NULL;			//Création d'un objet de typer ficher 
 
 
 
-	//-------------------------------------En-tï¿½te et en-fin des types de fichier ï¿½ extraire------------------------------------------//
+	//-------------------------------------En-tête et en-fin des types de fichier à extraire------------------------------------------//
 
-	//Fichiers sans problï¿½me d'extraction :
+	//Fichiers sans problème d'extraction :
 	const unsigned char chainePngEnTete[] = { 0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A,'\0' };	// 89 50 4E 47 0D 0A 1A 0A
 	const unsigned char chainePngEnFin[] = { 0x49,0x45,0x4E,0x44,0xAE,0x42,0x60,0x82, '\0' };	// 49 45 4E 44 AE 42 60 82
 
-	//Fichiers avec problï¿½mes d'extraction :
+	//Fichiers avec problèmes d'extraction :
 	const unsigned char chaineJpgEnTete[] = { 0xFF,0xD8,0xFF,'\0' };							// FF D8 FF
 	const unsigned char chaineJpgEnFin[] = { 0xFF,0xD9, '\0' };									// FF D9
 
@@ -71,17 +69,17 @@ int main(int argc, char* argv[])
 
 
 
-	//----------------------------Code pour le test du programme sans envoyer de paramï¿½tres en entrï¿½e-----------------------//
+	//----------------------------Code pour le test du programme sans envoyer de paramètres en entrée-----------------------//
 	////////TEST
-	//openFileReadingBinaryModeAndTest(&fichierLu, "C:\\Users\\Quent\\Downloads\\Tï¿½lï¿½chargement\\poubelle\\test.gif");//Ouverture fichier
-	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Tï¿½lï¿½chargement", chaineGifEnTete,sizeof(chaineGifEnTete) ,chaineGifEnFin,sizeof(chaineGifEnFin), "gifFile", ".gif");
+	//openFileReadingBinaryModeAndTest(&fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement\\poubelle\\test.gif");//Ouverture fichier
+	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement", chaineGifEnTete,sizeof(chaineGifEnTete) ,chaineGifEnFin,sizeof(chaineGifEnFin), "gifFile", ".gif");
 	////////TEST
 
 
 
-	//------------------------------------------------------Dï¿½but de traitement--------------------------------------------------------------//
+	//------------------------------------------------------Début de traitement--------------------------------------------------------------//
 
-	verifNbParametresSuffisant(&argc, 2, argv[0]);//Verification du nombre de paramï¿½tre en entrï¿½e supï¿½rieur ou ï¿½gal ï¿½ 2
+	verifNbParametresSuffisant(&argc, 2, argv[0]);//Verification du nombre de paramètre en entrée supérieur ou égal à 2
 
 	//Le code suivant s'occupe de la gestion des options
 	if (argv[1][0] == '-')
@@ -94,38 +92,38 @@ int main(int argc, char* argv[])
 			break;
 
 		case ('d'):
-			//Affiche le code hexadï¿½cimale du code analysï¿½ uniquement
+			//Affiche le code hexadécimale du code analysé uniquement
 
-			//Vï¿½rfie que le nombre de paramï¿½tre est supï¿½rieur ou ï¿½gal ï¿½ 3
+			//Vérfie que le nombre de paramètre est supérieur ou égal à 3
 			verifNbParametresSuffisant(&argc, 3, argv[0]);
 
-			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copiï¿½ de argv[2]
+			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
 			char* adresseFichier_d = malloc((strlen(argv[2]) + 1) * sizeof(char));
 			allocationDynamiqueTest(adresseFichier_d);
 			strcpy(adresseFichier_d, argv[2]);
 
-			ouvreFichierLectureEtTest(&fichierLu, adresseFichier_d);//Ouverture fichier ï¿½ lire
+			ouvreFichierLectureEtTest(&fichierLu, adresseFichier_d);//Ouverture fichier à lire
 			affichageCodeHexaAvecInterface(&nbOctetParLigne, adresseFichier_d, fichierLu);//Affichage du code hexa du fichier lu
 			fclose(fichierLu);//Fertemture du fichier lu
 
-			//Libï¿½raiton de la mï¿½moire allouï¿½e
+			//Libéraiton de la mémoire allouée
 			free(adresseFichier_d);
 
 			break;
 
 		case ('D'):
-			//Affiche le code hexadï¿½ciamle du code analysï¿½ et effectue l'extraction des fichiers.
+			//Affiche le code hexadéciamle du code analysé et effectue l'extraction des fichiers.
 
-			//Vï¿½rfie que le nombre de paramï¿½tre est supï¿½rieur ou ï¿½gal ï¿½ 4
+			//Vérfie que le nombre de paramètre est supérieur ou égal à 4
 			verifNbParametresSuffisant(&argc, 4, argv[0]);
 
-			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copiï¿½ de argv[2]
+			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
 			char* adresseFichier_D = malloc((strlen(argv[2]) + 1) * sizeof(char));
 			allocationDynamiqueTest(adresseFichier_D);
 			strcpy(adresseFichier_D, argv[2]);
 
-			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou ï¿½crire les fichiers trouvï¿½ dans le code du fichier lu
-			//La donnï¿½e est copiï¿½ de argv[3] dans adressseDestination_D
+			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou écrire les fichiers trouvé dans le code du fichier lu
+			//La donnée est copié de argv[3] dans adressseDestination_D
 			char* adresseDestination_D = malloc((strlen(argv[3]) + 1) * sizeof(char));
 			allocationDynamiqueTest(adresseDestination_D);
 			strcpy(adresseDestination_D, argv[3]);
@@ -139,28 +137,28 @@ int main(int argc, char* argv[])
 			rechercherFichiersDansFichier(fichierLu, adresseDestination_D, chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineJpgEnFin, sizeof(chaineJpgEnFin), "jpgFile", ".jpg");
 			rechercherFichiersDansFichier(fichierLu, adresseDestination_D, chaineGifEnTete, sizeof(chaineGifEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
 
-			//Fermerture du fichier lu (inspectï¿½)
+			//Fermerture du fichier lu (inspecté)
 			fclose(fichierLu);
 
-			//Libï¿½raiton de la mï¿½moire allouï¿½e
+			//Libéraiton de la mémoire allouée
 			free(adresseFichier_D);
 			free(adresseDestination_D);
 
 			break;
 
 		case ('e'):
-			//Effectue une extraction du fichier donnï¿½
+			//Effectue une extraction du fichier donné
 
-			//Vï¿½rfie que le nombre de paramï¿½tre est supï¿½rieur ou ï¿½gal ï¿½ 4
+			//Vérfie que le nombre de paramètre est supérieur ou égal à 4
 			verifNbParametresSuffisant(&argc, 4, argv[0]);
 
-			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copiï¿½ de argv[2]
+			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
 			char* adresseFichier_e = malloc((strlen(argv[2]) + 1) * sizeof(char));
 			allocationDynamiqueTest(adresseFichier_e);
 			strcpy(adresseFichier_e, argv[2]);
 
-			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou ï¿½crire les fichiers trouvï¿½ dans le code du fichier lu
-			//La donnï¿½e est copiï¿½ de argv[3] dans adressseDestination_e
+			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou écrire les fichiers trouvé dans le code du fichier lu
+			//La donnée est copié de argv[3] dans adressseDestination_e
 			char* adresseDestination_e = malloc((strlen(argv[3]) + 1) * sizeof(char));
 			allocationDynamiqueTest(adresseDestination_e);
 			strcpy(adresseDestination_e, argv[3]);
@@ -173,17 +171,17 @@ int main(int argc, char* argv[])
 			rechercherFichiersDansFichier(fichierLu, adresseDestination_e, chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineJpgEnFin, sizeof(chaineJpgEnFin), "jpgFile", ".jpg");
 			rechercherFichiersDansFichier(fichierLu, adresseDestination_e, chaineGifEnTete, sizeof(chaineGifEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
 
-			//Fermerture du fichier lu (inspectï¿½)
+			//Fermerture du fichier lu (inspecté)
 			fclose(fichierLu);
 
-			//Libï¿½raiton de la mï¿½moire allouï¿½e
+			//Libéraiton de la mémoire allouée
 			free(adresseFichier_e);
 			free(adresseDestination_e);
 
 			break;
 
 		default:
-			//Cas oï¿½ l'option donnï¿½e est inconnue
+			//Cas où l'option donnée est inconnue
 			printf("Error option %c unknown.\n", argv[1][1]);
 			afficherCommandes(argv[0]);
 			exit(2);
@@ -192,7 +190,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		//Dans le cas oï¿½ l'option est mal ï¿½crite on affiche la liste des commandes et l'usage
+		//Dans le cas où l'option est mal écrite on affiche la liste des commandes et l'usage
 		afficherCommandes(argv[0]);
 	}
 	return 0;
@@ -228,9 +226,9 @@ void afficherCommandes(const char nameFile[])
 void verifNbParametresSuffisant(const int* nbParam, const int nbParamMin, const char nomFichier[])
 {
 	/*
-	* Fonction qui affiche un message d'erreur et l'aide dans le cas oï¿½ le nombre de paramï¿½tre n'est pas suffisant
+	* Fonction qui affiche un message d'erreur et l'aide dans le cas où le nombre de paramètre n'est pas suffisant
 	* 
-	* Si le nombre de paramï¿½tre est insuffisant l'aide s'affiche et le programme s'arrï¿½te avec le message d'erreur 2
+	* Si le nombre de paramètre est insuffisant l'aide s'affiche et le programme s'arrête avec le message d'erreur 2
 	*/
 	if (*nbParam < nbParamMin)
 	{
@@ -243,9 +241,9 @@ void verifNbParametresSuffisant(const int* nbParam, const int nbParamMin, const 
 void allocationDynamiqueTest(char* tableau)
 {
 	/*
-	* Fonction qui test le bon fonctionnement dela crï¿½ation d'un tableau dynamique
+	* Fonction qui test le bon fonctionnement dela création d'un tableau dynamique
 	* 
-	* Si le tableau ne s'est pas crï¿½ï¿½ correctement alors le programme s'arrï¿½te avec le code erreur 3
+	* Si le tableau ne s'est pas créé correctement alors le programme s'arrête avec le code erreur 3
 	*/
 	if (tableau == NULL)
 	{
@@ -265,11 +263,11 @@ void ouvreFichierLectureEtTest(FILE** fichierLecture,const char adresseEntree[])
 	/*
 	* Fonction d'ouverture d'un fichier en lecture binaire et du test du bon fonctionnement
 	* 
-	* Le programme reï¿½oit en entrï¿½e l'adresse du fichier ï¿½ lire et tente de l'ouvrir et l'attribue ï¿½ l'objet fichierLecture
-	* Si l'ouverture di fichier ne s'est pas faite correctement alors le programma s'arrï¿½te avec le message d'erreur 2
+	* Le programme reçoit en entrée l'adresse du fichier à lire et tente de l'ouvrir et l'attribue à l'objet fichierLecture
+	* Si l'ouverture di fichier ne s'est pas faite correctement alors le programma s'arrête avec le message d'erreur 2
 	*/
 	*fichierLecture = fopen(adresseEntree, "rb");//Tente d'ouvrir le fichier en lecture binaire
-	if (*fichierLecture == NULL)//test si le fichier a ï¿½tï¿½ ouvert correctement
+	if (*fichierLecture == NULL)//test si le fichier a été ouvert correctement
 	{
 		printf("Input file %s\n"
 			"Error: No such file\n"
@@ -281,10 +279,10 @@ void ouvreFichierLectureEtTest(FILE** fichierLecture,const char adresseEntree[])
 void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcriture[], const char nomFichier[], const int *numFichier, const char extension[])
 {
 	/*
-	* Fonction de crï¿½ation d'un fichier et du dï¿½marrage de l'ï¿½criture en binaire
+	* Fonction de création d'un fichier et du démarrage de l'écriture en binaire
 	*
-	* La fonction recoit en entrï¿½e ce qui dï¿½fini le fichier ï¿½ crï¿½er, l'adresse, le nom, le numï¿½ro du fichier, et son extension.
-	* Une concatï¿½nation de ses donnï¿½es est faite afin de les mettres dans un seul tableau et enfin on crï¿½e un fichier avec.
+	* La fonction recoit en entrée ce qui défini le fichier à créer, l'adresse, le nom, le numéro du fichier, et son extension.
+	* Une concaténation de ses données est faite afin de les mettres dans un seul tableau et enfin on crée un fichier avec.
 	*/
 
 	int numFichierTemp = *numFichier;
@@ -297,8 +295,8 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 		nombreChiffre++;
 	}
 	
-	//En fonction du nombre de chiffre du numï¿½ro du fihcier calculer juste avant don crï¿½e un tableau
-	//de char qui aura autant de case que de chiffres ï¿½ le numï¿½ro de fichier
+	//En fonction du nombre de chiffre du numéro du fihcier calculer juste avant don crée un tableau
+	//de char qui aura autant de case que de chiffres à le numéro de fichier
 	char* numFichierChar = malloc((nombreChiffre+1) * sizeof(char));
 
 	//Appel de la fonction de test du focntionnement correcte de l'allocation dynamique
@@ -307,14 +305,14 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 
 	//Conversion entier en char[]
 	////Converti l'entier fournis en char[] dans la tableau numFichierChar en base 10.
-	//itoa(*numFichier, numFichierChar, 10);//Fonctionne mais pas sur linux car pas dans la bibliothï¿½que standart
+	//itoa(*numFichier, numFichierChar, 10);//Fonctionne mais pas sur linux car pas dans la bibliothèque standart
 	sprintf(numFichierChar, "%d", *numFichier);//Fonctionne sous windows et linux
 
 
-	//On dï¿½fini un tableau de char qui dont on dï¿½fini la taille en fonction de la somme de la taille de tous les autres tableaux.
+	//On défini un tableau de char qui dont on défini la taille en fonction de la somme de la taille de tous les autres tableaux.
 	/*
-	* Pour numFichierChar on est obligï¿½ de se baser sur la taille du tableau avec sizeof et non ce qu'il contient avec strlen
-	* car l'allocation dynamique avec malloc ne permet pas bien l'utilisation de strlen, qui rï¿½sulterait ï¿½ un dï¿½passement de mï¿½moire.
+	* Pour numFichierChar on est obligé de se baser sur la taille du tableau avec sizeof et non ce qu'il contient avec strlen
+	* car l'allocation dynamique avec malloc ne permet pas bien l'utilisation de strlen, qui résulterait à un dépassement de mémoire.
 	*/
 	char* adresseNomNumExtensionFichier = malloc((strlen(adresseEcriture)+ strlen(nomFichier) + sizeof(numFichierChar) + strlen(extension)) * sizeof(char));
 
@@ -326,8 +324,8 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 
 	/*
 	* Le if ci-dessous ajouter un '\' en fin du tableau adresseNomBumExtensionFichier si celui-ci n'en a pas.
-	* afin d'ï¿½viter que le dernier dossier envoyer ne soit pas compris comme un dossier mais comme une partie
-	* du fichier ï¿½ crï¿½er.
+	* afin d'éviter que le dernier dossier envoyer ne soit pas compris comme un dossier mais comme une partie
+	* du fichier à créer.
 	*/
 	if (adresseNomNumExtensionFichier[strlen(adresseNomNumExtensionFichier)-1] != '\\')
 	{
@@ -335,16 +333,16 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 		adresseNomNumExtensionFichier[strlen(adresseNomNumExtensionFichier)] = '\\';
 	}
 
-	//Concatï¿½nation de toute les donnï¿½es dans un tableau de char (adresse, nom, numï¿½ro et extension de fichier).
+	//Concaténation de toute les données dans un tableau de char (adresse, nom, numéro et extension de fichier).
 	strcat(adresseNomNumExtensionFichier, nomFichier);
 	strcat(adresseNomNumExtensionFichier, numFichierChar);
 	strcat(adresseNomNumExtensionFichier, extension);
 
-	//Crï¿½ation et dï¿½but d'ï¿½dition du fichier en binaire avec le paramï¿½tre tableau qui contient (adresse, nom, numï¿½ro et extension de fichier).
+	//Création et début d'édition du fichier en binaire avec le paramètre tableau qui contient (adresse, nom, numéro et extension de fichier).
 	*fichierEcriture = fopen(adresseNomNumExtensionFichier, "wb");
 
-	//Vï¿½rifie la bonne crï¿½ation et ï¿½dition du fichier en binaire. 
-	//Si une erreur survient alors le programme s'arrï¿½te avec l'erreur 4
+	//Vérifie la bonne création et édition du fichier en binaire. 
+	//Si une erreur survient alors le programme s'arrête avec l'erreur 4
 	if (fichierEcriture == NULL)
 	{
 		free(adresseNomNumExtensionFichier);
@@ -354,7 +352,7 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 		exit(4);
 	}
 
-	//Libï¿½ration des mï¿½moire allouï¿½es dynamiquement
+	//Libération des mémoire allouées dynamiquement
 	free(numFichierChar);
 	free(adresseNomNumExtensionFichier);
 }
@@ -367,7 +365,7 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 void affichageCodeHexaAvecInterface(const int *nbOctetParLigne,char adresseFichierLu[], FILE* fichierLu)
 {
 	/*
-	* Fonction qui affiche l'interface et le code hexadï¿½cimale du ficheir ouvert par l'appel de deux fonctions
+	* Fonction qui affiche l'interface et le code hexadécimale du ficheir ouvert par l'appel de deux fonctions
 	*/
 
 	afficherInterfaceCodeHexa(nbOctetParLigne, adresseFichierLu);
@@ -378,12 +376,12 @@ void affichageCodeHexaAvecInterface(const int *nbOctetParLigne,char adresseFichi
 void afficherInterfaceCodeHexa(const long *nbOctetParLigne, const char adresseFichier[])
 {
 	/*
-	* Fontion qui affiche l'interface d'ecriture du dï¿½but du code hexa
+	* Fontion qui affiche l'interface d'ecriture du début du code hexa
 	*/
 	printf("\nThe hexa code of the file %s is :\n\n", adresseFichier);
 	printf("Offset (h)\t");
 
-	for (int i = 0; i < *nbOctetParLigne; i++)//Ecrit le numï¿½ro de chaque colonne en fonction du nombre dï¿½finie en paramï¿½tre
+	for (int i = 0; i < *nbOctetParLigne; i++)//Ecrit le numéro de chaque colonne en fonction du nombre définie en paramètre
 	{
 		printf("%02X ", i);
 	}
@@ -393,33 +391,33 @@ void afficherInterfaceCodeHexa(const long *nbOctetParLigne, const char adresseFi
 void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne)
 {
 	/*
-	* Fonction qui affiche le code hexdï¿½cimale avec le numï¿½ro de ligne du fichier lu envouï¿½ en paramï¿½tre de la fonction.
+	* Fonction qui affiche le code hexdécimale avec le numéro de ligne du fichier lu envoué en paramètre de la fonction.
 	*/
 
 	long numeroLigne = 0;
 	unsigned char octetLu;
 	int nbOctetLigneEcrit = 0;
 
-	printf("%00000008X\t", numeroLigne);//Affichage premiï¿½re ligne
+	printf("%00000008X\t", numeroLigne);//Affichage première ligne
 
-	while (!feof(fichierLu)) // On continue tant qu'on ai pas ï¿½ la fin du fichier
+	while (!feof(fichierLu)) // On continue tant qu'on ai pas à la fin du fichier
 	{
-		//On affiche avant de lire le premier caractï¿½re pour ï¿½viter d'ï¿½crire le caractï¿½re de fin de fichier en hexa "FF" et en texte "ï¿½"
-		octetLu = fgetc(fichierLu); // On lit le caractï¿½re
+		//On affiche avant de lire le premier caractère pour éviter d'écrire le caractère de fin de fichier en hexa "FF" et en texte "ÿ"
+		octetLu = fgetc(fichierLu); // On lit le caractère
 
 		if (!feof(fichierLu))//Evite d'afficher l'octet de fin de fichier
 		{
-			if (nbOctetLigneEcrit >= *nbOctetParLigne)//Si on a attteint le bout de la ligne (nbOctetParLigne) alors on passe ï¿½ la ligne
+			if (nbOctetLigneEcrit >= *nbOctetParLigne)//Si on a attteint le bout de la ligne (nbOctetParLigne) alors on passe à la ligne
 			{
 				nbOctetLigneEcrit = 0;
 				printf("\n");
-				numeroLigne += *nbOctetParLigne;//Incrï¿½mentation du numï¿½ro de ligne par rapport au nombre d'octet par ligne
+				numeroLigne += *nbOctetParLigne;//Incrémentation du numéro de ligne par rapport au nombre d'octet par ligne
 				printf("%00000008X\t", numeroLigne);
 			}
-			printf("%02X ", octetLu); // On l'affiche en hexadï¿½cimale avec deux caractï¿½res et en majuscule s'il y a des lettres
+			printf("%02X ", octetLu); // On l'affiche en hexadécimale avec deux caractères et en majuscule s'il y a des lettres
 		}
 
-		nbOctetLigneEcrit++;//Incrï¿½mentation du nombre d'octet ï¿½crit ï¿½ la ligne actuelle
+		nbOctetLigneEcrit++;//Incrémentation du nombre d'octet écrit à la ligne actuelle
 		
 	}
 	printf("\n\n");
@@ -431,14 +429,14 @@ void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne)
 
 void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFichiers[], const unsigned char chaineEnTete[], const int tailleChaineEnTete, const unsigned char chaineEnFin[], const int tailleChaineEnFin, const char nomFichiers[], const char extension[])
 {
-	unsigned char octetLu;//Octet de rï¿½ception des donnï¿½es lu dans fichierLu
-	unsigned int numfichierPaterneTrouve = 0;//Numï¿½ro du fichier ï¿½ indiquï¿½ dans le nom lors de sa crï¿½ation
+	unsigned char octetLu;//Octet de réception des données lu dans fichierLu
+	unsigned int numfichierPaterneTrouve = 0;//Numéro du fichier à indiqué dans le nom lors de sa création
 	
-	//Donnï¿½e mï¿½moire qui informe combien d'octet nous avons passï¿½ aprï¿½s la derniï¿½re en-tï¿½te afin 
-	//de repartir en dessous une fois le prï¿½cdent fichier en train d'ï¿½tre crï¿½ï¿½ finsi (le temps de trouvï¿½ l'en-fin)
+	//Donnée mémoire qui informe combien d'octet nous avons passé après la dernière en-tête afin 
+	//de repartir en dessous une fois le précdent fichier en train d'être créé finsi (le temps de trouvé l'en-fin)
 	unsigned long nbOctetApresEnTete = 0;
 
-	int finTrouve = 0;//Boolï¿½en qui indique si l'en-fin du fichier dont on a prï¿½alablement trouvï¿½ l'en-tï¿½te a ï¿½tï¿½ trouvï¿½
+	int finTrouve = 0;//Booléen qui indique si l'en-fin du fichier dont on a préalablement trouvé l'en-tête a été trouvé
 
 
 	//unsigned char chaineLuChercheEnTete[sizeof(chaineEnTete)];
@@ -451,49 +449,49 @@ void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFi
 
 	rewind(fichierLu);
 
-	while (!feof(fichierLu)) // On continue tant qu'on ai pas ï¿½ la fin du fichier
+	while (!feof(fichierLu)) // On continue tant qu'on ai pas à la fin du fichier
 	{
-		//On affiche avant de lire le premier caractï¿½re pour ï¿½viter d'ï¿½crire le caractï¿½re de fin de fichier en hexa "FF" et en texte "ï¿½"
-		octetLu = fgetc(fichierLu); // On lit le caractï¿½re
+		//On affiche avant de lire le premier caractère pour éviter d'écrire le caractère de fin de fichier en hexa "FF" et en texte "ÿ"
+		octetLu = fgetc(fichierLu); // On lit le caractère
 		pileDecalage(chaineLuChercheEnTete, &octetLu, tailleChaineEnTete);// Rajoute en fin de pile le dernier octet lu
 
-		if (0 == compareTableaux(chaineLuChercheEnTete, chaineEnTete, tailleChaineEnTete))//Si la chaine d'en-tï¿½te est trouvï¿½ dans le fichier lu
+		if (0 == compareTableaux(chaineLuChercheEnTete, chaineEnTete, tailleChaineEnTete))//Si la chaine d'en-tête est trouvé dans le fichier lu
 		{
-			numfichierPaterneTrouve++;//Incrï¿½mentation du nombre de fichier de ce type trouvï¿½
+			numfichierPaterneTrouve++;//Incrémentation du nombre de fichier de ce type trouvé
 
-			FILE* fichierEcriture = NULL;//Crï¿½ation d'un objet de type fichier
+			FILE* fichierEcriture = NULL;//Création d'un objet de type fichier
 			
-			//Crï¿½ation d'un fichier et dï¿½but d'ï¿½criture en binaire dedans
+			//Création d'un fichier et début d'écriture en binaire dedans
 			ouvreFichierEcritureEtTest(&fichierEcriture, adresseEcritureFichiers, nomFichiers, &numfichierPaterneTrouve, extension);
 
-			//Ecriture de l'en-tï¿½te dans le ficheir crï¿½ï¿½
+			//Ecriture de l'en-tête dans le ficheir créé
 			fputs(chaineEnTete, fichierEcriture);
 
-			//Le while ci-dessous ï¿½crit chaque octet lu dans fichierLu dans fichierEcriture jusqu'ï¿½ trouvï¿½ l'en-fin
-			while (!feof(fichierLu) && finTrouve == 0)//Tant qu'on est pas ï¿½ la fin du fichier et que finTrouve=0
+			//Le while ci-dessous écrit chaque octet lu dans fichierLu dans fichierEcriture jusqu'à trouvé l'en-fin
+			while (!feof(fichierLu) && finTrouve == 0)//Tant qu'on est pas à la fin du fichier et que finTrouve=0
 			{
-				octetLu = fgetc(fichierLu); // On lit le caractï¿½re
+				octetLu = fgetc(fichierLu); // On lit le caractère
 
-				nbOctetApresEnTete++;//Incrï¿½mentation du nombre de caracteres passï¿½s aprï¿½s l'en-tï¿½te prï¿½cï¿½demment trouvï¿½e
+				nbOctetApresEnTete++;//Incrémentation du nombre de caracteres passés après l'en-tête précédemment trouvée
 
 				fputc(octetLu, fichierEcriture);//Ecrit l'octet lu dans le fichierEcrtiture
 
 				pileDecalage(chaineLuChercheEnFin, &octetLu, tailleChaineEnFin);//Rajoute en fin de pile le dernier octet lu
 
-				if (0 == compareTableaux(chaineLuChercheEnFin, chaineEnFin,tailleChaineEnFin))//Si l'en-fin est trouvï¿½e
+				if (0 == compareTableaux(chaineLuChercheEnFin, chaineEnFin,tailleChaineEnFin))//Si l'en-fin est trouvée
 				{
-					finTrouve = 1;//finTrouve est mis ï¿½ 1 afin de quitter le while
+					finTrouve = 1;//finTrouve est mis à 1 afin de quitter le while
 				}
 			}
 			finTrouve = 0;
-			fclose(fichierEcriture);//fertmeture du fichier ï¿½criture
-			fseek(fichierLu, (-1) * nbOctetApresEnTete, SEEK_CUR);//Place le curseur aprï¿½s l'en-tï¿½te prï¿½cï¿½demment trouvï¿½e
-			nbOctetApresEnTete = 0;//rï¿½initialisation de la valeur de replacement car on vient de se replacer aprï¿½s l'en-tï¿½te du fichier prï¿½cï¿½dent
+			fclose(fichierEcriture);//fertmeture du fichier écriture
+			fseek(fichierLu, (-1) * nbOctetApresEnTete, SEEK_CUR);//Place le curseur après l'en-tête précédemment trouvée
+			nbOctetApresEnTete = 0;//réinitialisation de la valeur de replacement car on vient de se replacer après l'en-tête du fichier précédent
 		}
 	}
-	rewind(fichierLu);//Remet le curseur au dï¿½but du fichier
+	rewind(fichierLu);//Remet le curseur au début du fichier
 
-	//Libï¿½ration de la mï¿½moire allouï¿½e dynamiquement
+	//Libération de la mémoire allouée dynamiquement
 	free(chaineLuChercheEnTete);
 	free(chaineLuChercheEnFin);
 
@@ -505,10 +503,10 @@ void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFi
 
 int compareTableaux(const unsigned char tab1[], const unsigned char tab2[], const int tailleTableaux)
 {
-	//Pour les fichiers avec un 0x00 il y a un problï¿½me car c'est compris comme un \0 donc la fin d'un tableau.
-	//Pour palier ce problï¿½me une fonction manuelle qui compare en-tete avec l'en-tete lue et l'en-fin et l'en-fin lue
+	//Pour les fichiers avec un 0x00 il y a un problème car c'est compris comme un \0 donc la fin d'un tableau.
+	//Pour palier ce problème une fonction manuelle qui compare en-tete avec l'en-tete lue et l'en-fin et l'en-fin lue
 	//en utilisant la taille des tableaux et non la fin du tableau avec \0 que fait strcmp
-	//Comme ï¿½a tous les caractï¿½res y compris les \0 seront comparï¿½s
+	//Comme ça tous les caractères y compris les \0 seront comparés
 
 	int identique = 0;
 	//Si tableaux identiques (return 0) sinon 1
@@ -523,7 +521,7 @@ int compareTableaux(const unsigned char tab1[], const unsigned char tab2[], cons
 void pileDecalage(unsigned char tab[], unsigned char* nouvelleValeur, int tailleTab)
 {
 	/*
-	* Fonction qui parcours la tableau et dï¿½cale les valeurs des plus 2 dans 1, 3 dans 2 etc... (du haut au bas de la pile)
+	* Fonction qui parcours la tableau et décale les valeurs des plus 2 dans 1, 3 dans 2 etc... (du haut au bas de la pile)
 	* Ensuite la nouvelle valeur est mise tout en haut de la pile.
 	*/
 
