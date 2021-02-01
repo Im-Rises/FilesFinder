@@ -362,7 +362,7 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 
 /*-------------------------------------------------------FONCTION AFFICHAGE CODE FICHIER LU---------------------------------------------------------*/
 
-void affichageCodeHexaAvecInterface(const int *nbOctetParLigne,char adresseFichierLu[], FILE* fichierLu)
+void affichageCodeHexaAvecInterface(const long *nbOctetParLigne,char adresseFichierLu[], FILE* fichierLu)
 {
 	/*
 	* Fonction qui affiche l'interface et le code hexadécimale du ficheir ouvert par l'appel de deux fonctions
