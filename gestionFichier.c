@@ -1,6 +1,6 @@
 #include "gestionFichier.h"
 
-// DIS PAS DE CONNERIES
+//C'est moi qui dis des conneries pas toi !!!
 /*------------------------------------------------------FONCTION D'AFFICHAGE AIDE-----------------------------------------*/
 
 void afficherCommandes(const char nomFichier[], const char version[])
