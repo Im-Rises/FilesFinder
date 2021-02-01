@@ -31,7 +31,7 @@ void allocationDynamiqueTest(char* tableau);
 void ouvreFichierLectureEtTest(FILE** fichierLecture, const char adresseEntree[]);
 void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcriture[], const char nomFichiers[], const int* numFichier, const char extension[]);
 
-void affichageCodeHexaAvecInterface(const long* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu);
+void affichageCodeHexaAvecInterface(const int* nbOctetParLigne, char adresseFichierLu[], FILE* fichierLu);
 void afficherInterfaceCodeHexa(const long* nbOctetParLigne, const char adresseFichier[]);
 void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne);
 
@@ -362,7 +362,7 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 
 /*-------------------------------------------------------FONCTION AFFICHAGE CODE FICHIER LU---------------------------------------------------------*/
 
-void affichageCodeHexaAvecInterface(const long *nbOctetParLigne,char adresseFichierLu[], FILE* fichierLu)
+void affichageCodeHexaAvecInterface(const int *nbOctetParLigne,char adresseFichierLu[], FILE* fichierLu)
 {
 	/*
 	* Fonction qui affiche l'interface et le code hexadécimale du ficheir ouvert par l'appel de deux fonctions
