@@ -1,5 +1,5 @@
-#ifndef GESTION_AFFICHAGE
-#define GESTION_AFFICHAGE
+#ifndef DEF_GESTION_FICHIER
+#define DEF_GESTION_FICHIER
 
 
 #include <stdio.h>
