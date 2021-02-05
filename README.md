@@ -4,6 +4,3 @@ Fonctionne actuellement pour les types de fichier suivant :
 - png
 - jpg/jpeg
 - gif
-
-Amélioration à effectuer :
-- Optimisations du main
