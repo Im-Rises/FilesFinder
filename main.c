@@ -26,6 +26,8 @@ int main(int argc, char* argv[])
 
 	const int nbOctetParLigne = 16;	//Nombre d'octet affiché par ligne
 	FILE* fichierLu = NULL;			//Création d'un objet de typer ficher 
+	char* adresseFichier = NULL;	//Adresse du fichier à lire
+	char* adresseDestination = NULL;//Adresse du répertoire ou écrire les fichiers trouvés
 
 
 
@@ -75,51 +77,18 @@ int main(int argc, char* argv[])
 			verifNbParametresSuffisant(&argc, 3, argv[0]);
 
 			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
-			char* adresseFichier_d = malloc((strlen(argv[2]) + 1) * sizeof(char));
-			allocationDynamiqueTest(adresseFichier_d);
-			strcpy(adresseFichier_d, argv[2]);
+			adresseFichier = malloc((strlen(argv[2]) + 1) * sizeof(char));
+			allocationDynamiqueTest(adresseFichier);
+			strcpy(adresseFichier, argv[2]);
 
-			ouvreFichierLectureEtTest(&fichierLu, adresseFichier_d);//Ouverture fichier à lire
-			affichageCodeHexaAvecInterface(&nbOctetParLigne, adresseFichier_d, fichierLu);//Affichage du code hexa du fichier lu
-			fclose(fichierLu);//Fertemture du fichier lu
-
-			//Libéraiton de la mémoire allouée
-			free(adresseFichier_d);
-
-			break;
-
-		case ('D'):
-			//Affiche le code hexadéciamle du code analysé et effectue l'extraction des fichiers.
-
-			//Vérfie que le nombre de paramètre est supérieur ou égal à 4
-			verifNbParametresSuffisant(&argc, 4, argv[0]);
-
-			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
-			char* adresseFichier_D = malloc((strlen(argv[2]) + 1) * sizeof(char));
-			allocationDynamiqueTest(adresseFichier_D);
-			strcpy(adresseFichier_D, argv[2]);
-
-			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou écrire les fichiers trouvé dans le code du fichier lu
-			//La donnée est copié de argv[3] dans adressseDestination_D
-			char* adresseDestination_D = malloc((strlen(argv[3]) + 1) * sizeof(char));
-			allocationDynamiqueTest(adresseDestination_D);
-			strcpy(adresseDestination_D, argv[3]);
-
-
-			ouvreFichierLectureEtTest(&fichierLu, adresseFichier_D);//Ouverture fichier
-			affichageCodeHexaAvecInterface(&nbOctetParLigne, adresseFichier_D, fichierLu);//Affichage du code hexa du fichier
-
-			//Recherche des fichiers connus
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_D, chainePngEnTete, sizeof(chainePngEnTete), chainePngEnFin, sizeof(chainePngEnFin), "pngFile", ".png");
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_D, chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineJpgEnFin, sizeof(chaineJpgEnFin), "jpgFile", ".jpg");
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_D, chaineGifEnTete, sizeof(chaineGifEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
-
+			ouvreFichierLectureEtTest(&fichierLu, adresseFichier);//Ouverture fichier à lire
+			affichageCodeHexaAvecInterface(&nbOctetParLigne, adresseFichier, fichierLu);//Affichage du code hexa du fichier lu
+			
 			//Fermerture du fichier lu (inspecté)
 			fclose(fichierLu);
 
 			//Libéraiton de la mémoire allouée
-			free(adresseFichier_D);
-			free(adresseDestination_D);
+			free(adresseFichier);
 
 			break;
 
@@ -130,30 +99,29 @@ int main(int argc, char* argv[])
 			verifNbParametresSuffisant(&argc, 4, argv[0]);
 
 			//Allocation d'un tableau dynamique qui contient l'adresse du fichier lu copié de argv[2]
-			char* adresseFichier_e = malloc((strlen(argv[2]) + 1) * sizeof(char));
-			allocationDynamiqueTest(adresseFichier_e);
-			strcpy(adresseFichier_e, argv[2]);
+			adresseFichier = malloc((strlen(argv[2]) + 1) * sizeof(char));
+			allocationDynamiqueTest(adresseFichier);
+			strcpy(adresseFichier, argv[2]);
 
 			//Allocation d'un tableau dynamique qui contient l'adresse de destination d'ou écrire les fichiers trouvé dans le code du fichier lu
 			//La donnée est copié de argv[3] dans adressseDestination_e
-			char* adresseDestination_e = malloc((strlen(argv[3]) + 1) * sizeof(char));
-			allocationDynamiqueTest(adresseDestination_e);
-			strcpy(adresseDestination_e, argv[3]);
+			adresseDestination = malloc((strlen(argv[3]) + 1) * sizeof(char));
+			allocationDynamiqueTest(adresseDestination);
+			strcpy(adresseDestination, argv[3]);
 
-
-			ouvreFichierLectureEtTest(&fichierLu, adresseFichier_e);//Ouverture fichier
+			ouvreFichierLectureEtTest(&fichierLu, adresseFichier);//Ouverture fichier
 
 			//Recherche des fichiers connus
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_e, chainePngEnTete, sizeof(chainePngEnTete), chainePngEnFin, sizeof(chainePngEnFin), "pngFile", ".png");
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_e, chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineJpgEnFin, sizeof(chaineJpgEnFin), "jpgFile", ".jpg");
-			rechercherFichiersDansFichier(fichierLu, adresseDestination_e, chaineGifEnTete, sizeof(chaineGifEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
+			rechercherFichiersDansFichier(fichierLu, adresseDestination, chainePngEnTete, sizeof(chainePngEnTete), chainePngEnFin, sizeof(chainePngEnFin), "pngFile", ".png");
+			rechercherFichiersDansFichier(fichierLu, adresseDestination, chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineJpgEnFin, sizeof(chaineJpgEnFin), "jpgFile", ".jpg");
+			rechercherFichiersDansFichier(fichierLu, adresseDestination, chaineGifEnTete, sizeof(chaineGifEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
 
 			//Fermerture du fichier lu (inspecté)
 			fclose(fichierLu);
 
 			//Libéraiton de la mémoire allouée
-			free(adresseFichier_e);
-			free(adresseDestination_e);
+			free(adresseFichier);
+			free(adresseDestination);
 
 			break;
 

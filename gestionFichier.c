@@ -18,7 +18,6 @@ void afficherCommandes(const char nomFichier[], const char version[])
 		"Options:\n"
 		"-h \tDisplay the list of command and manual (no input and output needed).\n"
 		"-d \tDisplay the hexadecimal code of the file scanned (No ouput needed).\n"
-		"-D \tDisplay the hexadecimail code of the file scanned and extract it's data.\n"
 		"-e \tExtract the data of the file.\n"
 		"\n", version, nomFichier);
 }
@@ -173,7 +172,6 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 	//Appel de la fonction de test du focntionnement correcte de l'allocation dynamique
 	allocationDynamiqueTest(numFichierChar);
 
-
 	//Conversion entier en char[]
 	////Converti l'entier fournis en char[] dans la tableau numFichierChar en base 10.
 	//itoa(*numFichier, numFichierChar, 10);//Fonctionne mais pas sur linux car pas dans la bibliothèque standart
@@ -250,13 +248,12 @@ void rechercherFichiersDansFichier(FILE* fichierLu, const char adresseEcritureFi
 
 	int finTrouve = 0;//Booléen qui indique si l'en-fin du fichier dont on a préalablement trouvé l'en-tête a été trouvé
 
-
-	//unsigned char chaineLuChercheEnTete[sizeof(chaineEnTete)];
 	unsigned char* chaineLuChercheEnTete = malloc(tailleChaineEnTete * sizeof(char));
+	allocationDynamiqueTest(chaineLuChercheEnTete);//Vérification allocation dynamique
 	chaineLuChercheEnTete[tailleChaineEnTete - 1] = '\0';
 
-	//unsigned char chaineLuChercheEnFin[sizeof(chaineEnFin)];
 	unsigned char* chaineLuChercheEnFin = malloc(tailleChaineEnFin * sizeof(char));
+	allocationDynamiqueTest(chaineLuChercheEnFin);//Vérification allocation dynamique
 	chaineLuChercheEnFin[tailleChaineEnFin - 1] = '\0';
 
 	rewind(fichierLu);
