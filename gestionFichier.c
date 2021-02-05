@@ -76,9 +76,8 @@ void afficherCodeHexa(FILE* fichierLu, const int* nbOctetParLigne)
 			if (nbOctetLigneEcrit >= *nbOctetParLigne)//Si on a attteint le bout de la ligne (nbOctetParLigne) alors on passe à la ligne
 			{
 				nbOctetLigneEcrit = 0;
-				printf("\n");
 				numeroLigne += *nbOctetParLigne;//Incrémentation du numéro de ligne par rapport au nombre d'octet par ligne
-				printf("%00000008X\t", numeroLigne);
+				printf("\n%00000008X\t", numeroLigne);
 			}
 			printf("%02X ", octetLu); // On l'affiche en hexadécimale avec deux caractères et en majuscule s'il y a des lettres
 		}
@@ -179,21 +178,26 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 	////Converti l'entier fournis en char[] dans la tableau numFichierChar en base 10.
 	//itoa(*numFichier, numFichierChar, 10);//Fonctionne mais pas sur linux car pas dans la bibliothèque standart
 	sprintf(numFichierChar, "%d", *numFichier);//Fonctionne sous windows et linux
-
-
+	
+	numFichierChar[nombreChiffre] = '\0';
+	
 	//On défini un tableau de char qui dont on défini la taille en fonction de la somme de la taille de tous les autres tableaux.
 	/*
 	* Pour numFichierChar on est obligé de se baser sur la taille du tableau avec sizeof et non ce qu'il contient avec strlen
 	* car l'allocation dynamique avec malloc ne permet pas bien l'utilisation de strlen, qui résulterait à un dépassement de mémoire.
-	*/
-	char* adresseNomNumExtensionFichier = malloc((strlen(adresseEcriture) + strlen(nomFichier) + sizeof(numFichierChar) + strlen(extension)) * sizeof(char));
+	* 
+	* Il est à noté qu'on ajoute +2 et non plus +1 pour la taille du tableau. En fait il y a un +1 pour \0 qui se placera en plus de notre chaîne de texte,
+	* mais il y a un autre +1 à mettre car en fonction de s'il manque un \ dans adresseEcriture on doit le rajouter (afin d'éviter que le nom du fichier de destination
+	* soit une partie du nom du fichier exemple : "dossier1\dossier2\dossier3NomFichier.ext" soit "dossier1\dossier2\dossier3\NomFichier.ext").
+	*/	
+	char* adresseNomNumExtensionFichier = malloc((strlen(adresseEcriture) + strlen(nomFichier) + strlen(numFichierChar) + strlen(extension) + 2) * sizeof(char));
 
 	//Appel de la fonction de test du focntionnement correcte de l'allocation dynamique
 	allocationDynamiqueTest(adresseNomNumExtensionFichier);
-
+	
 	adresseNomNumExtensionFichier[0] = '\0';
 	strcat(adresseNomNumExtensionFichier, adresseEcriture);
-
+	
 	/*
 	* Le if ci-dessous ajouter un '\' en fin du tableau adresseNomBumExtensionFichier si celui-ci n'en a pas.
 	* afin d'éviter que le dernier dossier envoyer ne soit pas compris comme un dossier mais comme une partie
@@ -204,11 +208,12 @@ void ouvreFichierEcritureEtTest(FILE** fichierEcriture, const char adresseEcritu
 		adresseNomNumExtensionFichier[strlen(adresseNomNumExtensionFichier) + 1] = '\0';
 		adresseNomNumExtensionFichier[strlen(adresseNomNumExtensionFichier)] = '\\';
 	}
-
+	
 	//Concaténation de toute les données dans un tableau de char (adresse, nom, numéro et extension de fichier).
-	strcat(adresseNomNumExtensionFichier, nomFichier);
+	strcat(adresseNomNumExtensionFichier, nomFichier);	
 	strcat(adresseNomNumExtensionFichier, numFichierChar);
 	strcat(adresseNomNumExtensionFichier, extension);
+	
 
 	//Création et début d'édition du fichier en binaire avec le paramètre tableau qui contient (adresse, nom, numéro et extension de fichier).
 	*fichierEcriture = fopen(adresseNomNumExtensionFichier, "wb");

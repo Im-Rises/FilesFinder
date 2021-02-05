@@ -46,8 +46,10 @@ int main(int argc, char* argv[])
 
 	//----------------------------Code pour le test du programme sans envoyer de paramètres en entrée-----------------------//
 	////////TEST
-	//openFileReadingBinaryModeAndTest(&fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement\\poubelle\\test.gif");//Ouverture fichier
-	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement", chaineGifEnTete,sizeof(chaineGifEnTete) ,chaineGifEnFin,sizeof(chaineGifEnFin), "gifFile", ".gif");
+	//ouvreFichierLectureEtTest(&fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement\\poubelle\\WinRAR.exe");//Ouverture fichier
+	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement", chaineGifEnTete, sizeof(chaineGifEnTete) ,chaineGifEnFin,sizeof(chaineGifEnFin), "gifFile", ".gif");
+	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement", chainePngEnTete, sizeof(chainePngEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
+	//rechercherFichiersDansFichier(fichierLu, "C:\\Users\\Quent\\Downloads\\Téléchargement", chaineJpgEnTete, sizeof(chaineJpgEnTete), chaineGifEnFin, sizeof(chaineGifEnFin), "gifFile", ".gif");
 	////////TEST
 
 
